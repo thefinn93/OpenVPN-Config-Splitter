@@ -7,4 +7,5 @@ pretty much work on any valid OpenVPN file.
 
 ## todo
 * Automatically import into Network Manager, maybe using [this](https://unix.stackexchange.com/a/237886) method
-* 
+* A proper configuration file
+* Maybe some automatic self-extracting magic so it can all be sent as one file. "Run this script to get on the VPN"
