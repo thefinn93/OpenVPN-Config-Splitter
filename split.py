@@ -42,6 +42,7 @@ def parse(path, foldername=None):
     outconfig = []
     current_inline = None
     inlines = {}
+    key_direction = None
     for line in lines:
         line = line.strip()
         if len(line) > 0:
@@ -57,7 +58,10 @@ def parse(path, foldername=None):
                     if foldername is None and len(words) > 1:
                         if words[0] in ["verify-x509-name"]:
                             foldername = mkfilename(words[1])
-                    outconfig.append(line)
+                    if words[0] == "key-direction":
+                        key_direction = words[1]
+                    else:
+                        outconfig.append(line)
                 else:
                     inlines[current_inline].append(line)
 
@@ -71,11 +75,17 @@ def parse(path, foldername=None):
     mainfile = os.path.join(storage, "%s.conf" % foldername)
     with open(mainfile, 'w') as f:
         for filename in inlines:
-            outconfig.append("%s %s" % (filename, os.path.join(storage, filename)))
+            if filename == "tls-auth" and key_direction is not None:
+                outconfig.append("%s %s %s" % (filename, os.path.join(storage, filename),
+                                               key_direction))
+            else:
+                outconfig.append("%s %s" % (filename, os.path.join(storage, filename)))
         f.write("\n".join(outconfig))
+        f.write("\n")
     for filename in inlines:
         with open(os.path.join(storage, filename), 'w') as f:
             f.write("\n".join(inlines[filename]))
+            f.write("\n")
     print("Go ahead and import %s into your network manager" % mainfile)
 
 if __name__ == "__main__":
