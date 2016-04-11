@@ -79,11 +79,11 @@ def parse(path, foldername=None):
                 outconfig.append("%s %s %s" % (filename, os.path.join(storage, filename),
                                                key_direction))
             else:
-                outconfig.append("%s %s" % (filename, os.path.join(storage, filename)))
+                outconfig.append("%s %s.pem" % (filename, os.path.join(storage, filename)))
         f.write("\n".join(outconfig))
         f.write("\n")
     for filename in inlines:
-        with open(os.path.join(storage, filename), 'w') as f:
+        with open("%s.pem" % os.path.join(storage, filename), 'w') as f:
             f.write("\n".join(inlines[filename]))
             f.write("\n")
     print("Go ahead and import %s into your network manager" % mainfile)
