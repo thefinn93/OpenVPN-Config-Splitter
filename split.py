@@ -76,7 +76,7 @@ def parse(path, foldername=None):
     with open(mainfile, 'w') as f:
         for filename in inlines:
             if filename == "tls-auth" and key_direction is not None:
-                outconfig.append("%s.pem %s %s" % (filename, os.path.join(storage, filename),
+                outconfig.append("%s %s.pem %s" % (filename, os.path.join(storage, filename),
                                                    key_direction))
             else:
                 outconfig.append("%s %s.pem" % (filename, os.path.join(storage, filename)))
